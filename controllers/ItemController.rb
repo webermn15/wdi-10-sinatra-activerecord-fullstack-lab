@@ -11,8 +11,9 @@ class ItemController < ApplicationController
 
 	end
 
-	get '/add' do 
-		erb :add_item
+	post '/add' do 
+		pp request.body
+		'check your terminal'
 	end
 
 end
