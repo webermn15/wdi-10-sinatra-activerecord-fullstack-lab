@@ -11,7 +11,8 @@ class ApplicationController < Sinatra::Base
 	set :views, File.expand_path('../views', File.dirname(__FILE__))
 
 	get '/' do 
-		erb :home
+		@page = 'todo'
+		erb :hello
 	end
 
 	not_found do 
