@@ -11,10 +11,11 @@ class ItemController < ApplicationController
 	end
 
 	get '/' do 
+		@user = User.find session[:user_id]
+		@items = @user.items
 
-		@items = Item.all
+		# @items = Item.all
 
-		# @items.to_json
 		@page = 'item index'
 		erb :item_index
 
