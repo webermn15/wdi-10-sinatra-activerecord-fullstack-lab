@@ -27,3 +27,8 @@ p.msg {
 	color: brown;
 	border: 1px solid black;
 }
+nav {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}

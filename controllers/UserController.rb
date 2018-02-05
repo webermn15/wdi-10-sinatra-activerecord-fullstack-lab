@@ -13,10 +13,13 @@ class UserController < ApplicationController
 	end
 
 	post '/login' do 
+		@pw = params[:password]
+
 		@user = User.find_by(username: params[:username])
-		if @user && @user.password == params[:password]
+		if @user && @user.authenticate(@pw)
 			session[:username] = @user.username
 			session[:logged_in] = true
+			session[:user_id] = @user.id
 			session[:message] = "logged in as #{@user.username}"
 			redirect '/items'
 		else
@@ -32,9 +35,19 @@ class UserController < ApplicationController
 
 		session[:logged_in] = true
 		session[:username] = @user.username
+		session[:user_id] = @user.id
 		session[:message] = "thanks for signing up fam"
 
 		redirect '/items'
+	end
+
+	get '/logout' do
+		session[:username] = nil
+		session[:logged_in] = false
+		session[:user_id] = nil
+		session[:message] = "successfully logged out"
+
+		redirect '/user/login'
 	end
 
 end

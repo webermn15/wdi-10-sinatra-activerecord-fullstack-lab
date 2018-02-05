@@ -11,6 +11,17 @@
 			<a href="/items">items index</a>
 			<a href="/items/add">add item</a>
 		</p>
+		<div>
+		<% if !session[:logged_in] %>	
+			<a href="/user/login">log in</a>
+			<a href="/user/register">register</a>
+		<% else %>
+			<p>
+				you are now logged in as <%= session[:username] %>
+				<a href="/user/logout">log off</a>
+			</p>
+		<% end %>
+		</div>
 	</nav>
 
 	<h1>this is a to-do app</h1>

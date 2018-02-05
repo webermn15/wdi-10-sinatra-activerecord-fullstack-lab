@@ -1,5 +1,15 @@
 class ItemController < ApplicationController 
 
+	# FILTER: the code on this filter will be run on all item routes
+
+	before do
+		pp "HEY YOURE TRYING TO DO ITEM STUFF"
+		if !session[:logged_in]
+			session[:message] = "you must be logged in to do that "
+			redirect '/user/login'
+		end
+	end
+
 	get '/' do 
 
 		@items = Item.all
@@ -25,7 +35,7 @@ class ItemController < ApplicationController
 
 		@item = Item.new
 		@item.title = params[:title]
-		@item.user_id = 1
+		@item.user_id = session[:user_id]
 		@item.save
 
 		session[:message] = "You added item #{@item.id}"
