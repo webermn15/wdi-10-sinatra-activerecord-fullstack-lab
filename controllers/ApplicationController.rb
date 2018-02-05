@@ -15,8 +15,4 @@ class ApplicationController < Sinatra::Base
 		erb :hello
 	end
 
-	not_found do 
-		'404'
-	end
-
 end

@@ -1,14 +1,23 @@
 class ItemController < ApplicationController 
 
 	get '/' do 
+
+		@items = Item.all
+
+		# @items.to_json
+		@page = 'item index'
+		erb :item_index
+
+	end
+
+	get '/add' do 
 		@page = "Add Item"
 		@method = "POST"
-		@action = "items/add"
+		@action = "/items/add"
 		@placeholder = "enter a new item"
 		@value = ""
 		@buttontext = "add item"
 		erb :add_item
-
 	end
 
 	post '/add' do 
@@ -19,7 +28,7 @@ class ItemController < ApplicationController
 		@item.user_id = 1
 		@item.save
 
-		@item.to_json
+		redirect '/items'
 	end
 
 end
