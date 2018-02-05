@@ -6,6 +6,7 @@
 			<input type="hidden" name="_method" value="DELETE">
 			<li><%= item.title %></li>
 			<button>delete this</button>
+			<a href="/items/edit/<%= item.id %>">edit this</a>
 		</form>
 	<% end %>
 </ul>

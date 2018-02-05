@@ -13,7 +13,13 @@
 		</p>
 	</nav>
 
-	<h1>this is a to-do app i am building</h1>
+	<h1>this is a to-do app</h1>
+	<% if session[:message] %>
+		<p class="msg">
+			<%= session[:message] %>
+		</p>
+		<% session[:mesage] = nil %>
+	<% end %>
 	<%= yield %>
 
 </body>
