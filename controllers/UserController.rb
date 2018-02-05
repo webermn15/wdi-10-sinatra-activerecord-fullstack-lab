@@ -21,7 +21,7 @@ class UserController < ApplicationController
 			session[:logged_in] = true
 			session[:user_id] = @user.id
 			session[:message] = "logged in as #{@user.username}"
-			redirect '/items'
+			redirect '/items/ajax'
 		else
 			session[:message] = "invalid username or password, try again"
 		end
