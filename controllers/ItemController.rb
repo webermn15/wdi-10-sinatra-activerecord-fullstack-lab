@@ -12,8 +12,14 @@ class ItemController < ApplicationController
 	end
 
 	post '/add' do 
-		pp request.body
-		'check your terminal'
+		pp params
+
+		@item = Item.new
+		@item.title = params[:title]
+		@item.user_id = 1
+		@item.save
+
+		@item.to_json
 	end
 
 end
