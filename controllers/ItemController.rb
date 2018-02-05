@@ -87,10 +87,10 @@ class ItemController < ApplicationController
 		@item.delete
 		resp = {
 			status: {
-				all_good: true
+				all_good: true,
+				message: "you deleted #{params[:id]}"
 			}
 		}
-		session[:message] = "you deleted #{@item.id}"
 
 		@item.to_json
 	end
@@ -106,6 +106,36 @@ class ItemController < ApplicationController
 		@item = Item.find params[:id]
 		@page = "edit item #{@item.id}"
 		erb :edit_item
+	end
+
+	# api edit route
+
+	get '/j/edit/:id' do 
+		@item = Item.find params[:id]
+		resp = {
+			status: {
+				all_good: true,
+				message: "you are editing item #{params[:id]}"
+			},
+			item: @item
+		}
+		resp.to_json
+	end
+
+	patch '/j/:id' do 
+		@item = Item.find_by(id:params[:id])
+		@item.title = params[:title]
+		@item.save
+		resp = {
+			status: {
+				all_good: true,
+				message: "updated item: #{params[:id]}"
+			},
+			item: @item
+		}
+
+		resp.to_json
+
 	end
 
 	patch '/:id' do 

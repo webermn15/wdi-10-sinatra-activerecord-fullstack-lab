@@ -2,7 +2,6 @@
 // $('body').append('<p>sup fam the static js is working</p>')
 
 const deleteItem = (itemId) => {
-
 	// console.log("delete this fam: "+ itemId)
 
 	$.ajax({
@@ -11,14 +10,54 @@ const deleteItem = (itemId) => {
 		dataType: 'JSON',
 		success: getItems,
 		fail: (err) => {
-			console.error('it did not delete for some reason: ' + err)
+			console.error('it did not delete for some reason: ' + err);
 		}
 	})
 }
 
-const editItem = (itemId) => {
+const updateItem = (itemId) => {
+	console.log('update item number '+ itemId +' forthcoming');
+}
 
-	console.log('edit this one, fam: '+itemId)
+// this will show a pre-populated input where the user will update the data and press a button that will send a patch request to perform the update in the database
+const showEditor = (data) => {
+	console.log(data);
+	const $items = $('#items li');
+	// console.log($items);
+	let which; //this will hold the li index of the item we are trying to edit
+	for (let i of $items) {
+		// console.log(i)
+		// console.log($(i).data('thisitem'));
+			let thisIndex = $(i).data('thisitem');
+			if (thisIndex == data.item.id) {
+				which = i
+				break;
+			}
+	}
+
+	console.log(which);
+	const $theItem = $(which);
+	const $form = $('<div>');
+	const $input = $('<input type="text" name"title" value="'+data.item.title+'">')
+	$form.append($input);
+	const $button = $('<button data-action="update">').text('update this');
+	$form.append($button);
+	$theItem.append($form);
+
+}
+
+const editItem = (itemId) => {
+	console.log('edit this one, fam: '+itemId);
+
+	$.ajax({
+		url: '/items/j/edit/'+itemId,
+		method: 'GET',
+		dataType: 'JSON',
+		success: showEditor,
+		fail: (err) => {
+			console.error('why wont it edit? '+ err);
+		}
+	})
 }
 
 $('#items').on('click', 'li', (e) => {
@@ -31,8 +70,11 @@ $('#items').on('click', 'li', (e) => {
 	if (jMethod == 'delete') {
 		deleteItem(itemId);
 	}
-	if (jMethod == 'edit') {
+	else if (jMethod == 'edit') {
 		editItem(itemId);
+	}
+	else if (jMethod == 'update') {
+		updateItem(itemId);
 	}
 
 })
