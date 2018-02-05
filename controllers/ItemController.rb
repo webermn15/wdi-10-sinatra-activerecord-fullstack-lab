@@ -10,6 +10,44 @@ class ItemController < ApplicationController
 		end
 	end
 
+	get '/ajax' do 
+		erb :item_index_ajax
+	end
+
+	# json index route
+	get '/j' do 
+		@user = User.find session[:user_id]
+		@items = @user.items.order(:id)
+		# @items.to_json
+		# building our API response
+		resp = {
+			status: {
+				all_good: true,
+				number_of_results: @items.length
+			},
+			items: @items
+		}
+		resp.to_json;
+	end
+
+	post '/j' do 
+		@item = Item.new
+		@item.title = params[:title]
+		@item.user_id = session[:user_id]
+		@item.save
+
+		resp = {
+			status: {
+				all_good: true
+				# you could put other information here
+			},
+			item: @item
+		}
+
+		resp.to_json
+	end
+
+	# index route
 	get '/' do 
 		@user = User.find session[:user_id]
 		@items = @user.items.order(:id)
@@ -19,10 +57,6 @@ class ItemController < ApplicationController
 		@page = 'item index'
 		erb :item_index
 
-	end
-
-	get '/ajax' do 
-		erb :item_index_ajax
 	end
 
 	get '/add' do 
@@ -46,6 +80,19 @@ class ItemController < ApplicationController
 		session[:message] = "You added item #{@item.id}"
 
 		redirect '/items'
+	end
+
+	delete '/j/:id' do 
+		@item = Item.find params[:id]
+		@item.delete
+		resp = {
+			status: {
+				all_good: true
+			}
+		}
+		session[:message] = "you deleted #{@item.id}"
+
+		@item.to_json
 	end
 
 	delete '/:id' do 
