@@ -16,7 +16,22 @@ const deleteItem = (itemId) => {
 }
 
 const updateItem = (itemId) => {
-	console.log('update item number '+ itemId +' forthcoming');
+	// console.log('update item number '+ itemId +' forthcoming');
+
+	const title = $('#update-item').val();
+
+	$.ajax({
+		url: '/items/j/'+itemId,
+		method: 'PATCH',
+		dataType: 'JSON',
+		data: {
+			title: title
+		},
+		success: getItems,
+		fail: (err) => {
+			console.error('was not able to patch?? help: '+ err)
+		}
+	})
 }
 
 // this will show a pre-populated input where the user will update the data and press a button that will send a patch request to perform the update in the database
@@ -38,7 +53,7 @@ const showEditor = (data) => {
 	console.log(which);
 	const $theItem = $(which);
 	const $form = $('<div>');
-	const $input = $('<input type="text" name"title" value="'+data.item.title+'">')
+	const $input = $('<input id="update-item" type="text" name"title" value="'+data.item.title+'">')
 	$form.append($input);
 	const $button = $('<button data-action="update">').text('update this');
 	$form.append($button);
